@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "SnakeBase.h"
 #include "Components/InputComponent.h"
+#include "Food.h"
 
 // Sets default values
 APlayerPawnBase::APlayerPawnBase()
@@ -22,6 +23,7 @@ void APlayerPawnBase::BeginPlay()
 	Super::BeginPlay();
 	SetActorRotation(FRotator(-90, 0, 0));
 	CreateSnakeActor();
+	AddRandomFood();
 }
 
 // Called every frame
@@ -29,6 +31,11 @@ void APlayerPawnBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (SnakeActor->AmountFood < AmountMax)
+	{
+		AddRandomFood();
+		SnakeActor->AmountFood++;
+	}
 }
 
 // Called to bind functionality to input
@@ -73,3 +80,18 @@ void APlayerPawnBase::HandlePlayerHorizontalInput(float value)
 		}
 	}
 }
+
+void APlayerPawnBase::AddRandomFood()
+{
+	FRotator StratPointRotation = FRotator(0, 0, 0);
+
+	float SpawnX = FMath::FRandRange(minX, maxX);
+	float SpawnY = FMath::FRandRange(minY, maxY);
+
+	FVector StartPoint = FVector(SpawnX, SpawnY, spawnZ);
+
+	FoodActor = GetWorld()->SpawnActor<AFood>(FoodActorClass,FTransform(StratPointRotation, StartPoint));
+
+}
+
+

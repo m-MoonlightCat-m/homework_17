@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class ASnakeBase;
+class AFood;
 
 UCLASS()
 class SNAKEGAME_API APlayerPawnBase : public APawn
@@ -26,6 +27,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeBase> SnakeActorClass;
+
+	UPROPERTY(BlueprintReadWrite)
+	AFood* FoodActor;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AFood> FoodActorClass;
 	
 	
 
@@ -46,4 +53,11 @@ public:
 	void HandlePlayerVerticalInput(float value);
 	UFUNCTION()
 	void HandlePlayerHorizontalInput(float value);
+
+	float minX = -600.f; float maxX = 600.f;
+	float minY = -1200.f; float maxY = 1200.f;
+	float spawnZ = 35.f;
+	int32 AmountMax = 5;
+
+	void AddRandomFood();
 };
